@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 public static class ArraySelector
 {
     public static void Run()
@@ -8,9 +10,25 @@ public static class ArraySelector
         var intResult = ListSelector(l1, l2, select);
         Console.WriteLine("<int[]>{" + string.Join(", ", intResult) + "}"); // <int[]>{1, 2, 3, 2, 4, 4, 6, 8, 10, 5}
     }
-
-    private static int[] ListSelector(int[] list1, int[] list2, int[] select)
+ private static int[] ListSelector(int[] list1, int[] list2, int[] select)
     {
-        return [];
+        int[] result = new int[select.Length];
+        int i1 = 0;
+        int i2 = 0;
+
+        for (int i = 0; i < select.Length; i++)
+        {
+            if (select[i] == 1)
+            {
+                result[i] = list1[i1];
+                i1++;
+            }
+            else if (select[i] == 2)
+            {
+                result[i] = list2[i2];
+                i2++;
+            }
+        }
+        return result;
     }
 }
