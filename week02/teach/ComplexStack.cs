@@ -10,6 +10,8 @@
                     return false;
             }
             else if (item is ']') {
+
+                
                 if (stack.Count == 0 || stack.Pop() != '[')
                     return false;
             }
