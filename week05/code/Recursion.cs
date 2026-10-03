@@ -43,18 +43,20 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+        // Base case: if size is 0, add the current word to results
         if (size == 0)
         {
             results.Add(word);
             return;
         }
-        else 
+        // Recursive case: iterate through each letter and build permutations
+        else
         {
             for (int i = 0; i < letters.Length; i++)
             {
-                string newWord = word + letters[i];
-                string newLetters = letters.Remove(i, 1);
-                PermutationsChoose(results, newLetters, size - 1, newWord);
+                string newWord = word + letters[i]; // Add the current letter to the word
+                string newLetters = letters.Remove(i, 1); // Remove the used letter from the remaining letters
+                PermutationsChoose(results, newLetters, size - 1, newWord); // Recursive call with updated parameters
             }
         }
     }
@@ -114,19 +116,20 @@ public static class Recursion
             return 4;
 
         // TODO Start Problem 3
-
+         // Initialize the dictionary if it is null
         if (remember == null)
         {
-            remember = new Dictionary<int, decimal>();
+            remember = new Dictionary<int, decimal>(); // Initialize the dictionary if it is null
         }
 
+        // Check if the result is already in the dictionary
         if (remember.ContainsKey(s))
         {
-            return remember[s];
+            return remember[s]; // Return the stored result if it exists
         }
 
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember); // Calculate the number of ways to climb 's' stairs using the recursive formula
 
         // Store the result in the dictionary for future reference 
         remember[s] = ways;
@@ -150,18 +153,24 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+
+        // Base case: if there are no wildcards, add the pattern to results
         int index = pattern.IndexOf('*');
+
+        // If there are no wildcards, add the pattern to results
         if (index == -1)
         {
             results.Add(pattern);
             return;
         }
+
+        // Recursive case: replace the wildcard with '0' and '1' and call the function recursively
         else
         {
-            string patternWithZero = pattern.Substring(0, index) + '0' + pattern.Substring(index + 1);
-            string patternWithOne = pattern.Substring(0, index) + '1' + pattern.Substring(index + 1);
-            WildcardBinary(patternWithZero, results);
-            WildcardBinary(patternWithOne, results);
+            string patternWithZero = pattern.Substring(0, index) + '0' + pattern.Substring(index + 1); // Replace the wildcard with '0'
+            string patternWithOne = pattern.Substring(0, index) + '1' + pattern.Substring(index + 1); // Replace the wildcard with '1'
+            WildcardBinary(patternWithZero, results); // Call the function recursively with the new pattern
+            WildcardBinary(patternWithOne, results); // Call the function recursively with the new pattern
         }
     }
 
@@ -183,14 +192,19 @@ public static class Recursion
         // TODO Start Problem 5
         // ADD CODE HERE
 
+        // Add the current position to the path
         currPath.Add((x, y));
-
+        
+        // Check if the current position is the end of the maze
         if (maze.IsEnd(x, y))
         {
-            results.Add(currPath.AsString());
+            results.Add(currPath.AsString()); // Use this to add your path to the results array keeping track of complete maze solutions when you find the solution.
         }
+
+        // Explore all possible directions (up, down, left, right) from the current position
         else
         {
+            // Define the possible directions to move in the maze
             int[][] directtions = new int[][]
             {
                 new int[] {0, 1}, // right
@@ -199,16 +213,20 @@ public static class Recursion
                 new int[] {-1, 0} // up
             };
 
+            // Loop through each direction and attempt to move in that direction
             foreach (var direction in directtions)
-            {
+            {   
+                // Calculate the new position based on the current position and the direction
                 int newX = x + direction[0];
                 int newY = y + direction[1];
 
+                // Check if the new position is within the bounds of the maze
                 if (newX >= 0 && newX < maze.Width && newY >= 0 && newY < maze.Height)
                 {
-                    if (maze.IsValidMove(currPath,newX, newY))
+                    // Check if the move to the new position is valid (not a wall and not already in the current path)
+                    if (maze.IsValidMove(currPath, newX, newY))
                     {
-                        SolveMaze(results, maze, newX, newY, currPath);
+                        SolveMaze(results, maze, newX, newY, currPath); // Recursive call to explore the new position
                     }
                 }
             }
